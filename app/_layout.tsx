@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
-import { Slot } from "expo-router";
+import { Redirect, Slot } from "expo-router";
 
 const tokenCache = {
   async getToken(key: string) {
@@ -8,6 +8,7 @@ const tokenCache = {
       const item = await SecureStore.getItemAsync(key);
       if (item) {
         console.log(`${key} was used 🔐 \n`);
+       
       } else {
         console.log("No values stored under key: " + key);
       }
