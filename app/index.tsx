@@ -15,17 +15,19 @@ const index = () => {
   const { signOut } = useClerk();
   const { isSignedIn, isLoaded, userId } = useAuth();
   console.log(isSignedIn);
+  // useEffect(() => {
+  //   const check = () => {
+  //     if (!isSignedIn) {
+  //       console.log(isSignedIn, "done");
+  //       router.push("/sign-up");
+  //     }
+  //   };
+  //   check();
+  // }, []);
 
-  useEffect(() => {
-    console.log(isLoaded, isSignedIn, userId);
-    const checkUser = () => {
-      if (isLoaded && !isSignedIn) {
-        console.log(isSignedIn, "done");
-      }
-      console.log(isSignedIn, "done");
-    };
-    checkUser();
-  }, [isSignedIn, isLoaded]);
+  if (!isSignedIn) {
+    return <Redirect href={"/sign-up"} />;
+  }
 
   return (
     <SafeAreaView>

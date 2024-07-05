@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
 import {
   Text,
@@ -11,9 +11,9 @@ import {
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-import { useOAuth, useUser } from "@clerk/clerk-expo";
+import { useAuth, useOAuth, useUser } from "@clerk/clerk-expo";
 import * as Linking from "expo-linking";
-import { router, useRouter } from "expo-router";
+import { Redirect, router, useRouter } from "expo-router";
 
 export const useWarmUpBrowser = () => {
   React.useEffect(() => {
@@ -32,7 +32,12 @@ const SignInWithOAuth = () => {
   useWarmUpBrowser();
   const router = useRouter();
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
-
+  const { isSignedIn } = useAuth();
+useEffect(()=>{
+if(isSignedIn){
+  router.push('/')
+}
+},[isSignedIn])
   const onPress = React.useCallback(async () => {
     try {
       const { createdSessionId, signIn, signUp, setActive } =
@@ -49,7 +54,6 @@ const SignInWithOAuth = () => {
           signUp?.firstName,
           signUp?.id
         );
-        router.push("/");
       } else {
         // Use signIn or signUp for next steps such as MFA
         console.log("SignIn info:", signIn);
