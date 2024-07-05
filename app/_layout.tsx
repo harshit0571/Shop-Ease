@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
-import { Redirect, Slot } from "expo-router";
+import { Redirect, Slot, Stack } from "expo-router";
 
 const tokenCache = {
   async getToken(key: string) {
@@ -8,7 +8,6 @@ const tokenCache = {
       const item = await SecureStore.getItemAsync(key);
       if (item) {
         console.log(`${key} was used 🔐 \n`);
-       
       } else {
         console.log("No values stored under key: " + key);
       }
@@ -40,7 +39,10 @@ function RootLayoutNav() {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
-        <Slot />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="(products)" />
+        </Stack>
       </ClerkLoaded>
     </ClerkProvider>
   );

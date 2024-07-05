@@ -33,16 +33,16 @@ const SignInWithOAuth = () => {
   const router = useRouter();
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
   const { isSignedIn } = useAuth();
-useEffect(()=>{
-if(isSignedIn){
-  router.push('/')
-}
-},[isSignedIn])
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push("/");
+    }
+  }, [isSignedIn]);
   const onPress = React.useCallback(async () => {
     try {
       const { createdSessionId, signIn, signUp, setActive } =
         await startOAuthFlow({
-          redirectUrl: Linking.createURL("/dashboard", { scheme: "myapp" }),
+          redirectUrl: Linking.createURL("/", { scheme: "myapp" }),
         });
 
       if (createdSessionId) {
