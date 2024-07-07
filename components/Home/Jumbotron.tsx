@@ -1,20 +1,34 @@
-import { View, Text, Pressable, Image, ImageBackground } from "react-native";
+import { View, Text, Pressable, ImageBackground } from "react-native";
 import React from "react";
 
-const Jumbotron = () => {
+interface propInterface {
+  imageUrl: string;
+  title: string;
+  description: string;
+  buttonText: string;
+  onPress: () => void;
+}
+const Jumbotron = ({
+  imageUrl,
+  title,
+  description,
+  buttonText,
+  onPress,
+}: propInterface) => {
   return (
-    <View className="bg-red-400  w-[90%] m-auto my-5 rounded-lg flex-row">
-      <ImageBackground source={{uri:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS957jJ7dRg7H4KLHnjMRgSjyac40U6zR0EvA&s"}} className="flex-1 rounded-lg" >
-        <View className="flex-col w-[50%] gap-4 p-3">
-          <Text className="text-3xl text-white font-semibold">
-            Converse X DRKSHDW
-          </Text>
+    <View className="bg-red-400 w-[90%] m-auto my-5 rounded-lg flex-row">
+      <ImageBackground source={{ uri: imageUrl }} className="flex-1 rounded-lg">
+        <View className="flex-col w-[60%] gap-4 p-3">
+          <Text className="text-3xl text-white font-semibold">{title}</Text>
           <Text className="text-sm text-white font-semibold">
-            Fashion Designer Rick Owns, disorts and reshapes an icon
+            {description}
           </Text>
-          <Pressable className="p-2 bg-red-500 border-2 border-black max-w-[100px] rounded-2xl">
+          <Pressable
+            className="p-2 bg-red-500 border-2 border-black max-w-[100px] rounded-2xl"
+            onPress={onPress}
+          >
             <Text className="text-white text-center max-w-[100px]">
-              Shop Now
+              {buttonText}
             </Text>
           </Pressable>
         </View>
