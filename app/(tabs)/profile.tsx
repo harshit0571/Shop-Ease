@@ -1,12 +1,30 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, Pressable } from "react-native";
+import React, { useEffect } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth, useClerk } from "@clerk/clerk-expo";
+import { useRouter } from "expo-router";
 
 const profile = () => {
+  const { signOut } = useClerk();
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (!isSignedIn) {
+      router.push("/sign-up");
+    }
+  }, [isSignedIn]);
   return (
-    <View>
+    <SafeAreaView>
+      <Pressable
+        onPress={() => {
+          signOut();
+        }}
+      >
+        <Text>Signout</Text>
+      </Pressable>
       <Text>profile</Text>
-    </View>
-  )
-}
+    </SafeAreaView>
+  );
+};
 
-export default profile
+export default profile;

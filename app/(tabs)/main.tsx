@@ -1,10 +1,11 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/components/Home/Header";
 import Jumbotron from "@/components/Home/Jumbotron";
 import BrandsScroll from "@/components/Home/BrandsScroll";
+import CategoriesSection from "@/components/Home/CategoriesSection";
 
 const main = () => {
   const brands = [
@@ -41,15 +42,18 @@ const main = () => {
   ];
   return (
     <SafeAreaView>
-      <Header />
-      <Jumbotron
-        imageUrl="https://thumbs.dreamstime.com/b/red-converse-shoes-hanging-red-wall-pair-red-converse-shoes-suspended-red-wall-ai-generated-306691318.jpg"
-        title="Converse X DRKSHDW"
-        description="Fashion Designer Rick Owens distorts and reshapes an icon."
-        buttonText="Shop Now"
-        onPress={() => console.log("Button Pressed")}
-      />
-      <BrandsScroll brands={brands} />
+      <ScrollView>
+        <Header />
+        <Jumbotron
+          imageUrl="https://thumbs.dreamstime.com/b/red-converse-shoes-hanging-red-wall-pair-red-converse-shoes-suspended-red-wall-ai-generated-306691318.jpg"
+          title="Converse X DRKSHDW"
+          description="Fashion Designer Rick Owens distorts and reshapes an icon."
+          buttonText="Shop Now"
+          onPress={() => console.log("Button Pressed")}
+        />
+        <BrandsScroll brands={brands} />
+        <CategoriesSection />
+      </ScrollView>
     </SafeAreaView>
   );
 };

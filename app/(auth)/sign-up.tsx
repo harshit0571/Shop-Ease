@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
+import { setDoc,doc, collection } from "firebase/firestore";
+
 import {
   Text,
   View,
@@ -14,6 +16,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { useAuth, useOAuth, useUser } from "@clerk/clerk-expo";
 import * as Linking from "expo-linking";
 import { Redirect, router, useRouter } from "expo-router";
+import { db } from "@/firebaseConfig";
 
 export const useWarmUpBrowser = () => {
   React.useEffect(() => {
@@ -47,17 +50,15 @@ const SignInWithOAuth = () => {
 
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
-
-        console.log(
-          "User info:",
-          signUp?.emailAddress,
-          signUp?.firstName,
-          signUp?.id
-        );
-      } else {
-        // Use signIn or signUp for next steps such as MFA
-        console.log("SignIn info:", signIn);
-        console.log("SignUp info:", signUp);
+      }
+      if (signUp) {
+        console.log(signUp.id, "d");
+        const userDoc = doc(db, "users", signUp?.id || "d");
+        await setDoc(userDoc, {
+          name: signUp?.firstName,
+          email: signUp?.emailAddress,
+          uid: signUp?.id,
+        });
       }
     } catch (err) {
       console.error("OAuth error", err);

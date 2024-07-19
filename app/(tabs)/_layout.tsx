@@ -1,29 +1,38 @@
-import { View, Text, Platform } from "react-native";
-import React from "react";
+import { View, Text, Platform, Animated } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Tabs } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 const _layout = () => {
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
+          // display: "none",
+          position: "absolute",
           width: "90%",
           margin: "auto",
           borderRadius: 30,
-          
-          paddingBottom:-1,
-          zIndex:2,
+          left: "5%",
+          right: "5%",
+          paddingBottom: -1,
+          zIndex: 2,
           //   paddingTop: Platform.OS === "ios"? 14 : 0,
-          flexDirection:"row",
+
+          flexDirection: "row",
           height: 50,
-          bottom: Platform.OS=="ios" ? 30 :10,
+          bottom: Platform.OS == "ios" ? 30 : 10,
           backgroundColor: "black",
+          shadowColor: "#000",
+          shadowOffset: { width: 2, height: 10 },
+          shadowOpacity: 0.25,
+          shadowRadius: 5,
+          elevation: 5,
         },
       }}
     >
- 
       <Tabs.Screen
         name="main"
         options={{
@@ -43,7 +52,7 @@ const _layout = () => {
       <Tabs.Screen
         name="favourites"
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <View
               className={
                 (focused && "bg-red-500") +
@@ -54,7 +63,6 @@ const _layout = () => {
             </View>
           ),
           tabBarShowLabel: false,
-          
         }}
       />
       <Tabs.Screen
