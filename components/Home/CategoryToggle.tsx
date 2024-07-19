@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, Pressable } from "react-native";
 import React from "react";
 
 interface category {
@@ -7,9 +7,15 @@ interface category {
 }
 interface propsInterface {
   categories: category[];
+  activeTab: any;
+  setActiveTab: any;
 }
 
-const CategoryToggle = ({ categories }: propsInterface) => {
+const CategoryToggle = ({
+  categories,
+  activeTab,
+  setActiveTab,
+}: propsInterface) => {
   return (
     <View className="flex-row py-3 gap-3">
       <FlatList
@@ -18,10 +24,17 @@ const CategoryToggle = ({ categories }: propsInterface) => {
         keyExtractor={(item) => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <View className="p-3 mr-3 rounded-full border-2 border-black">
+        renderItem={({ item, index }) => (
+          <Pressable
+            className={
+              "p-3 mr-3 rounded-full border-2 border-black " +
+              (index === activeTab &&
+                "bg-red-500 text-white font-bold border-red-500")
+            }
+            onPress={() => setActiveTab(index)}
+          >
             <Text>{item.name}</Text>
-          </View>
+          </Pressable>
         )}
       />
     </View>
