@@ -1,6 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { Redirect, Slot, Stack } from "expo-router";
+import CategoriesProvider from "@/context/CategoriesProvider";
 
 const tokenCache = {
   async getToken(key: string) {
@@ -39,10 +40,12 @@ function RootLayoutNav() {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="(products)" />
-        </Stack>
+        <CategoriesProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="(products)" />
+          </Stack>
+        </CategoriesProvider>
       </ClerkLoaded>
     </ClerkProvider>
   );

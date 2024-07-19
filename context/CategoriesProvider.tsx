@@ -1,4 +1,3 @@
-import { View, Text } from "react-native";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
@@ -11,28 +10,27 @@ interface CategoryContextType {
   categories: category[];
   setCategories: React.Dispatch<React.SetStateAction<category[]>>;
 }
-const CategoryContext = createContext<CategoryContextType | undefined>(
-  undefined
-);
+const CategoryContext = createContext<CategoryContextType>({
+  categories: [],
+  setCategories: () => {},
+});
 
 export const getCategories = () => {
   return useContext(CategoryContext);
 };
 
-const CategoriesProvider = (children: any) => {
+const CategoriesProvider = ({ children }: any) => {
   const [categories, setCategories] = useState<category[]>([]);
   useEffect(() => {
     const fetchCategories = async () => {
       const categoriesSnapShot = await getDocs(collection(db, "categories"));
-      let categoriesList: category[] = [];
-      categoriesSnapShot.forEach((docs) => [
-        ...categoriesList,
-        {
-          id: docs.id,
-          name: docs.data().name,
-        },
-      ]);
+      const categoriesList: category[] = categoriesSnapShot.docs.map((doc) => ({
+        id: doc.id,
+        name: doc.data().name,
+      }));
+
       setCategories(categoriesList);
+      console.log(categoriesList);
     };
     fetchCategories();
   }, []);

@@ -33,7 +33,7 @@ const CategoryToggle = ({
             }
             onPress={() => setActiveTab(index)}
           >
-            <Text>{item.name}</Text>
+            <Text className="text-sm first-letter:uppercase">{item.name}</Text>
           </Pressable>
         )}
       />
