@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 const CustomHeader = () => {
   const router = useRouter();
   return (
-    <SafeAreaView className="flex flex-row px-5 mt-3 justify-between items-center">
+    <SafeAreaView className="flex flex-row px-5 bg-white h-max w-full justify-between items-center">
       <TouchableOpacity
         className="bg-white rounded-full p-2 flex justify-center items-center"
         onPress={() => router.back()}

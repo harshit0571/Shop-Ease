@@ -41,7 +41,7 @@ const main = () => {
     },
   ];
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1">
       <ScrollView>
         <Header />
         <Jumbotron
