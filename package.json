@@ -17,11 +17,15 @@
   "dependencies": {
     "@clerk/clerk-expo": "^1.2.5",
     "@expo/vector-icons": "^14.0.2",
+    "@one-am/react-native-simple-image-slider": "^0.14.0",
     "@react-navigation/native": "^6.0.2",
+    "@shopify/flash-list": "^1.7.0",
     "expo": "~51.0.18",
     "expo-auth-session": "~5.5.2",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.7",
+    "expo-haptics": "~13.0.1",
+    "expo-image": "~1.12.13",
     "expo-linking": "~6.3.1",
     "expo-random": "~14.0.1",
     "expo-router": "~3.5.17",
@@ -38,11 +42,13 @@
     "react-native": "0.74.3",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-reanimated": "~3.10.1",
-    "react-native-safe-area-context": "4.10.1",
+    "react-native-reanimated-carousel": "^3.5.1",
+    "react-native-safe-area-context": "4.10.5",
     "react-native-screens": "3.31.1",
+    "react-native-svg": "15.2.0",
     "react-native-vector-icons": "^10.1.0",
     "react-native-web": "~0.19.10",
-    "expo-image": "~1.12.13"
+    "styled-components": "^6.1.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
