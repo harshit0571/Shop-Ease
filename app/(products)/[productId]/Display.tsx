@@ -22,8 +22,8 @@ const Index = () => {
   }, []);
   return (
     // <SafeAreaView className="flex-1 bg-red-400">
-  
-      <ScrollView className="flex-1 w-full">
+
+    <ScrollView className="flex-1 w-full">
       <View className="w-full flex-1">
         <Image
           contentFit="cover"
@@ -31,18 +31,18 @@ const Index = () => {
           className="w-full flex-1 h-[350px]"
         />
       </View>
-        <View className="h-max w-full flex flex-row gap-3 p-3">
-          {product?.images.map((image: string, index: number) => (
-            <TouchableOpacity onPress={() => setSelectedImage(index)}>
-              <Image
-                contentFit="cover"
-                source={{ uri: image }}
-                className="w-[60px] h-[60px] border-solid border-black border-2 rounded-xl shadow-lg shadow-black"
-              />
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+      <View className="h-max w-full flex flex-row gap-3 p-3">
+        {product?.images.map((image: string, index: number) => (
+          <TouchableOpacity onPress={() => setSelectedImage(index)}>
+            <Image
+              contentFit="cover"
+              source={{ uri: image }}
+              className="w-[60px] h-[60px] border-solid border-black border-2 rounded-xl shadow-lg shadow-black"
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScrollView>
     // </SafeAreaView>
   );
 };
