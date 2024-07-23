@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
-import { setDoc,doc, collection } from "firebase/firestore";
+import { setDoc, doc, collection } from "firebase/firestore";
 
 import {
   Text,

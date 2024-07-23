@@ -4,17 +4,26 @@ import CategoryToggle from "./CategoryToggle";
 import { getCategories } from "@/context/CategoriesProvider";
 import { query, collection, where, limit, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
+import ProductCardContainer from "./ProductCardContainer";
+
+interface product {
+  id: String;
+  title: String;
+  images: String[];
+  price: Number;
+}
 
 const CategoriesSection = () => {
   const [activeTab, setActiveTab] = useState(0);
   const { categories } = getCategories();
   console.log(categories);
-  const [productList, setProductList] = useState(null);
+  const [productList, setProductList] = useState<product[] | null>(null);
 
   const getProducts = async () => {
     const q = query(
       collection(db, "Products"),
-      where("category", "==", activeTab)
+      where("category", "==", activeTab),
+      limit(4)
     );
 
     const snapShot = await getDocs(q);
@@ -24,8 +33,7 @@ const CategoriesSection = () => {
       images: doc.data().images,
       price: doc.data().price,
     }));
-
-    console.log(list);
+    setProductList(list);
   };
 
   useEffect(() => {
@@ -39,7 +47,7 @@ const CategoriesSection = () => {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
-      
+      {productList && <ProductCardContainer productList={productList} />}
     </View>
   );
 };

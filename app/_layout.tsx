@@ -43,7 +43,7 @@ function RootLayoutNav() {
         <CategoriesProvider>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="(products)" />
+            <Stack.Screen name="(products)" options={{ headerShown: false }} />
           </Stack>
         </CategoriesProvider>
       </ClerkLoaded>
