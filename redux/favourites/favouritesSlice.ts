@@ -3,8 +3,8 @@ import { getDocs, collection } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
 interface Favourite {
+  pID: string;
   id: string;
-  name: string;
 }
 
 interface FavouritesState {
