@@ -13,22 +13,25 @@ import { addDoc, collection, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useDispatch, useSelector } from "react-redux";
 import favourites from "@/app/(tabs)/favourites";
-import { fetchFavourites } from "@/redux/favourites/favouritesSlice";
+import {
+  addToFavourites,
+  fetchFavourites,
+  removeFromFavourites,
+} from "@/redux/favourites/favouritesSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 
 const CustomHeader = () => {
   const router = useRouter();
   const { productId } = useLocalSearchParams();
-
-  const addToFavourites = async () => {
-    try {
-      await addDoc(collection(db, "favourites"), {
-        pID: productId,
-        date: new Date().toISOString(),
-      });
-    } catch (error) {}
-  };
   const dispatch = useDispatch<AppDispatch>();
+
+  const handleAddToFavourites = () => {
+    dispatch(addToFavourites(productId as string));
+  };
+  const handleRemoveFromFavourites = (id: string) => {
+    dispatch(removeFromFavourites(id));
+  };
+
   const favourites = useSelector(
     (state: RootState) => state.favourites.favourites
   );
@@ -36,6 +39,7 @@ const CustomHeader = () => {
   useEffect(() => {
     dispatch(fetchFavourites());
   }, [dispatch]);
+  const favourite = favourites.find((doc) => doc.pID === productId);
 
   return (
     <SafeAreaView className="flex flex-row px-5 pt-0 pb-[-15]  bg-red-500 w-full  justify-between items-center">
@@ -47,12 +51,21 @@ const CustomHeader = () => {
       </TouchableOpacity>
       <StatusBar barStyle={"light-content"} />
       <Text className="text-2xl text-white font-bold">Product Details</Text>
-      <TouchableOpacity
-        className="flex justify-center items-center"
-        onPress={() => addToFavourites()}
-      >
-        <AntDesign name="hearto" size={30} color={"white"} />
-      </TouchableOpacity>
+      {favourite ? (
+        <TouchableOpacity
+          className="flex justify-center items-center"
+          onPress={() => handleRemoveFromFavourites(favourite.id)}
+        >
+          <AntDesign name="heart" size={30} color={"white"} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          className="flex justify-center items-center"
+          onPress={() => handleAddToFavourites()}
+        >
+          <AntDesign name="hearto" size={30} color={"white"} />
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 };

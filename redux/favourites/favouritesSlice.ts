@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { getDocs, collection } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
 interface Favourite {
@@ -23,6 +29,27 @@ export const fetchFavourites = createAsyncThunk(
     return favouritesList;
   }
 );
+export const addToFavourites = createAsyncThunk(
+  "favourites/addToFavourites",
+  async (productId: string) => {
+    const docRef = await addDoc(collection(db, "favourites"), {
+      pID: productId,
+      date: new Date().toISOString(),
+    });
+    return {
+      id: docRef.id,
+      pID: productId,
+      date: new Date().toISOString(),
+    };
+  }
+);
+export const removeFromFavourites = createAsyncThunk(
+  "favourites/removeFromFavourites",
+  async (id: string) => {
+    await deleteDoc(doc(db, "favourites", id));
+    return id;
+  }
+);
 
 const initialState: FavouritesState = {
   favourites: [],
@@ -37,6 +64,20 @@ const favouritesSlice = createSlice({
       fetchFavourites.fulfilled,
       (state, action: PayloadAction<Favourite[]>) => {
         state.favourites = action.payload;
+      }
+    );
+    builder.addCase(
+      addToFavourites.fulfilled,
+      (state, action: PayloadAction<Favourite>) => {
+        state.favourites.push(action.payload);
+      }
+    );
+    builder.addCase(
+      removeFromFavourites.fulfilled,
+      (state, action: PayloadAction<string>) => {
+        state.favourites = state.favourites.filter(
+          (favourite) => favourite.id !== action.payload
+        );
       }
     );
   },
