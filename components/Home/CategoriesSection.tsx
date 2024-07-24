@@ -14,15 +14,16 @@ interface product {
 }
 
 const CategoriesSection = () => {
-  const [activeTab, setActiveTab] = useState(0);
   const { categories } = getCategories();
+  const [activeTab, setActiveTab] = useState(null);
+
   console.log(categories);
   const [productList, setProductList] = useState<product[] | null>(null);
 
   const getProducts = async () => {
     const q = query(
       collection(db, "Products"),
-      where("category", "==", activeTab),
+      where("category", "==", activeTab || ""),
       limit(4)
     );
 
@@ -38,6 +39,9 @@ const CategoriesSection = () => {
 
   useEffect(() => {
     getProducts();
+    if(!activeTab){
+      setActiveTab(categories[0]?.id)
+    }
   }, [activeTab]);
   return (
     <View className=" w-[90%] m-auto my-5 px-2 rounded-lg flex-col">

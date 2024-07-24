@@ -56,13 +56,14 @@ const Index = () => {
     const color = [
       "bg-red-500",
       ["bg-orange-500"],
-      ["orange-yellow-500"],
+      ["bg-orange-400"],
+      ["bg-yellow-300"],
       ["bg-green-300"],
       ["bg-green-500"],
     ];
-if(rating===0){
-  return 'bg-gray-400'
-}
+    if (rating === 0) {
+      return "bg-gray-400";
+    }
     return color[Math.round(rating)];
   };
 
