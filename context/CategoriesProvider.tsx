@@ -19,6 +19,7 @@ export const getCategories = () => {
   return useContext(CategoryContext);
 };
 
+
 const CategoriesProvider = ({ children }: any) => {
   const [categories, setCategories] = useState<category[]>([]);
   useEffect(() => {
@@ -35,7 +36,9 @@ const CategoriesProvider = ({ children }: any) => {
     fetchCategories();
   }, []);
   return (
-    <CategoryContext.Provider value={{ categories, setCategories }}>
+    <CategoryContext.Provider
+      value={{ categories, setCategories }}
+    >
       {children}
     </CategoryContext.Provider>
   );
