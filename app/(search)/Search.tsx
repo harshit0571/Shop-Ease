@@ -1,12 +1,56 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Keyboard,
+  Text,
+} from "react-native";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import PreviousSearches from "@/components/search/PreviousSearches";
 
 const Search = () => {
   const router = useRouter();
+  const [searchVal, setSearchVal] = useState<string>("");
+
+  useEffect(() => {
+    const loadSearchVal = async () => {
+      try {
+        const storedSearchVal = await AsyncStorage.getItem("searchVal");
+        if (storedSearchVal) {
+          setSearchVal(storedSearchVal);
+        }
+      } catch (error) {
+        console.error("Failed to load search value from storage:", error);
+      }
+    };
+
+    loadSearchVal();
+  }, []);
+
+  const handleSearchChange = (value: string) => {
+    setSearchVal(value);
+  };
+  const [buttonClicked, setButtonClicked] = useState(0);
+
+  const handleSearchSubmit = async () => {
+    try {
+      const storedSearches = await AsyncStorage.getItem("searchArray");
+      const searchArray = storedSearches ? JSON.parse(storedSearches) : [];
+      if (searchVal && !searchArray.includes(searchVal)) {
+        searchArray.push(searchVal);
+      }
+      await AsyncStorage.setItem("searchArray", JSON.stringify(searchArray));
+      setSearchVal("");
+      setButtonClicked(buttonClicked + 1);
+      Keyboard.dismiss();
+    } catch (error) {
+      console.error("Failed to save search value to storage:", error);
+    }
+  };
 
   return (
     <SafeAreaView>
@@ -16,12 +60,17 @@ const Search = () => {
         </TouchableOpacity>
         <TextInput
           placeholder="search"
+          value={searchVal}
+          onChangeText={handleSearchChange}
+          onSubmitEditing={handleSearchSubmit}
           keyboardAppearance="light"
-          className=" bg-gray-200 z- w-auto flex-1 p-2 py-3 rounded-lg flex flex-row items-center"
+          className="bg-gray-200 w-auto flex-1 p-2 py-3 rounded-lg"
         />
+        <TouchableOpacity onPress={handleSearchSubmit} className=" rounded-lg">
+          <AntDesign name="search1" size={30} color={"black"} />
+        </TouchableOpacity>
       </View>
-
-      <PreviousSearches />
+      { <PreviousSearches reRender={buttonClicked}/>}
     </SafeAreaView>
   );
 };
