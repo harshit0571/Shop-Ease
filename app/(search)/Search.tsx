@@ -55,6 +55,7 @@ const Search = () => {
             id: doc.id,
             name: doc.data().name,
           }));
+
           setSearchData(array);
         } catch (error) {
           console.error("Error fetching products: ", error);

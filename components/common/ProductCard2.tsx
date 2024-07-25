@@ -9,22 +9,22 @@ interface productInterface {
   id: any;
 }
 
-const ProductCard = ({ title, price, images, id }: productInterface) => {
+const ProductCard2 = ({ title, price, images, id }: productInterface) => {
   const router = useRouter();
 
   return (
     <Pressable
-      className="flex flex-col h-max w-[50%] my-2 justify-center "
+      className="flex flex-col h-max w-max mx-2 my-2 justify-center"
       onPress={() => router.push("/" + id+"/Display")}
     >
       <Image
         source={{ uri: images[0] }}
-        className="h-[250px] w-[90%] rounded-lg shadow-lg"
+        className="h-[250px] w-[180px] rounded-lg shadow-lg"
       />
-      <Text className="font-semibold text-md my-1">{title}</Text>
+      <Text className="font-semibold text-md w-[180px] my-1">{title}</Text>
       <Text className="font-semibold text-lg">₹{price}</Text>
     </Pressable>
   );
 };
 
-export default ProductCard;
+export default ProductCard2;
