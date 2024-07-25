@@ -56,7 +56,7 @@ const SignInWithOAuth = () => {
           });
           console.log("User created successfully");
         }
-        router.push("/");
+        router.push("/main");
       }
     };
     saveUser();
