@@ -8,26 +8,31 @@ import {
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { addDoc, collection, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useDispatch, useSelector } from "react-redux";
-import favourites from "@/app/(tabs)/favourites";
 import {
   addToFavourites,
   fetchFavourites,
   removeFromFavourites,
 } from "@/redux/favourites/favouritesSlice";
 import { AppDispatch, RootState } from "@/redux/store";
+import { useAuth } from "@clerk/clerk-expo";
 
 const CustomHeader = () => {
   const router = useRouter();
   const { productId } = useLocalSearchParams();
   const dispatch = useDispatch<AppDispatch>();
+  const { userId } = useAuth();
+  console.log(userId, "id");
 
   const handleAddToFavourites = () => {
-    dispatch(addToFavourites(productId as string));
+    if (userId) {
+      dispatch(addToFavourites({ productId: productId as string, userId: userId }));
+    }
   };
+
   const handleRemoveFromFavourites = (id: string) => {
     dispatch(removeFromFavourites(id));
   };
@@ -37,14 +42,15 @@ const CustomHeader = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchFavourites());
+    dispatch(fetchFavourites(userId as string));
   }, [dispatch]);
+
   const favourite = favourites.find((doc) => doc.pID === productId);
 
   return (
     <SafeAreaView className="flex flex-row px-5 pt-0 pb-[-15]  bg-red-500 w-full  justify-between items-center">
       <TouchableOpacity
-        className=" flex justify-center  items-center"
+        className="flex justify-center items-center"
         onPress={() => router.back()}
       >
         <AntDesign name="arrowleft" size={30} color={"white"} />
@@ -61,7 +67,7 @@ const CustomHeader = () => {
       ) : (
         <TouchableOpacity
           className="flex justify-center items-center"
-          onPress={() => handleAddToFavourites()}
+          onPress={handleAddToFavourites}
         >
           <AntDesign name="hearto" size={30} color={"white"} />
         </TouchableOpacity>

@@ -15,25 +15,25 @@ import {
 import { db } from "@/firebaseConfig";
 import ProductCard from "@/components/common/ProductCard";
 import { fetchFavourites } from "@/redux/favourites/favouritesSlice";
+import ProductCard2 from "@/components/common/ProductCard2";
+import { useAuth } from "@clerk/clerk-expo";
 
-const favourites = () => {
+const Favourites = () => {
   const favourites = useSelector(
     (state: RootState) => state.favourites.favourites
   );
-
+  const { userId } = useAuth();
+  console.log(userId, "id");
   const [products, setProducts] = useState<any>([]); // New state for products
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchFavourites());
+    dispatch(fetchFavourites(userId as string));
   }, [dispatch]);
   useEffect(() => {
     const getProducts = async () => {
       if (favourites.length > 0) {
-        // Get all product IDs from favourites
         const productIds = favourites.map((fav: any) => fav.pID);
-
-        // Query to fetch products based on IDs
         const productsCollection = collection(db, "Products");
         const productsQuery = query(
           productsCollection,
@@ -53,33 +53,28 @@ const favourites = () => {
     getProducts();
   }, [favourites]);
   return (
-    <SafeAreaView className="flex justify-center flex-col p-5 flex-1 items-center w-full">
-      <Text className="text-3xl mb-10">My Favourites</Text>
+    <SafeAreaView className="flex justify-center flex-col p-5 flex-1 w-full">
+      <Text className="text-3xl mb-10 text-center">My Favourites</Text>
       {!favourites ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-  
-
         <FlatList
           data={products}
           numColumns={2}
           renderItem={({ item }) => (
-          
-              <ProductCard
-                key={item.id}
-                title={item.name}
-                price={item.price}
-                images={item.images}
-                id={item.id}
-              />
-       
+            <ProductCard2
+              key={item.id}
+              title={item.name}
+              price={item.price}
+              images={item.images}
+              id={item.id}
+            />
           )}
           keyExtractor={(item) => item.id}
         />
-               
       )}
     </SafeAreaView>
   );
 };
 
-export default favourites;
+export default Favourites;

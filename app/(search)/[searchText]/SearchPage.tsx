@@ -99,7 +99,7 @@ const SearchPage = () => {
   }, []);
 
   return (
-    <View className="flex justify-center flex-col p-5 flex-1 items-center w-full">
+    <View className="flex justify-center flex-col p-5 flex-1 w-full">
       {!searchData ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (

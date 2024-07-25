@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as WebBrowser from "expo-web-browser";
-import { setDoc, doc, collection } from "firebase/firestore";
+import { setDoc, doc, collection, getDoc } from "firebase/firestore";
 
 import {
   Text,
@@ -36,11 +36,31 @@ const SignInWithOAuth = () => {
   const router = useRouter();
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
   const { isSignedIn } = useAuth();
+  const { userId } = useAuth();
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
   useEffect(() => {
-    if (isSignedIn) {
-      router.push("/");
-    }
-  }, [isSignedIn]);
+    const saveUser = async () => {
+      if (userId) {
+        console.log(userId, "uid");
+        const userDocRef = doc(db, "users", userId || "temp");
+
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (!userDocSnapshot.exists()) {
+          // Document does not exist, create it
+          await setDoc(userDocRef, {
+            name: name,
+            email: email,
+            uid: userId || "temp",
+          });
+          console.log("User created successfully");
+        }
+        router.push("/");
+      }
+    };
+    saveUser();
+  }, [userId, name, email]);
   const onPress = React.useCallback(async () => {
     try {
       const { createdSessionId, signIn, signUp, setActive } =
@@ -52,13 +72,9 @@ const SignInWithOAuth = () => {
         setActive!({ session: createdSessionId });
       }
       if (signUp) {
-        console.log(signUp.id, "d");
-        const userDoc = doc(db, "users", signUp?.id || "d");
-        await setDoc(userDoc, {
-          name: signUp?.firstName,
-          email: signUp?.emailAddress,
-          uid: signUp?.id,
-        });
+        setEmail(signUp?.emailAddress || "");
+        setName(signUp?.firstName || "");
+        console.log(signUp?.emailAddress);
       }
     } catch (err) {
       console.error("OAuth error", err);

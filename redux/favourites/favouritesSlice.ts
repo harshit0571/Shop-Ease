@@ -5,12 +5,15 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
 interface Favourite {
-  pID: string;
   id: string;
+  pID: string;
+  date: string;
 }
 
 interface FavouritesState {
@@ -19,9 +22,10 @@ interface FavouritesState {
 
 export const fetchFavourites = createAsyncThunk(
   "favourites/fetchFavourites",
-  async () => {
+  async (userId: string) => {
     const favouritesCollection = collection(db, "favourites");
-    const favouritesSnapshot = await getDocs(favouritesCollection);
+    const favouritesQuery = query(favouritesCollection, where("uID", "==", userId));
+    const favouritesSnapshot = await getDocs(favouritesQuery);
     const favouritesList = favouritesSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -29,11 +33,14 @@ export const fetchFavourites = createAsyncThunk(
     return favouritesList;
   }
 );
+
+
 export const addToFavourites = createAsyncThunk(
   "favourites/addToFavourites",
-  async (productId: string) => {
+  async ({ productId, userId }: { productId: string; userId: string }) => {
     const docRef = await addDoc(collection(db, "favourites"), {
       pID: productId,
+      uID: userId,
       date: new Date().toISOString(),
     });
     return {
@@ -43,6 +50,7 @@ export const addToFavourites = createAsyncThunk(
     };
   }
 );
+
 export const removeFromFavourites = createAsyncThunk(
   "favourites/removeFromFavourites",
   async (id: string) => {

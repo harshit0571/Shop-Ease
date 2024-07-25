@@ -15,7 +15,7 @@ interface product {
 
 const CategoriesSection = () => {
   const { categories } = getCategories();
-  const [activeTab, setActiveTab] = useState(null);
+  const [activeTab, setActiveTab] = useState<any>(null);
 
   console.log(categories);
   const [productList, setProductList] = useState<product[] | null>(null);
@@ -38,11 +38,13 @@ const CategoriesSection = () => {
   };
 
   useEffect(() => {
-    getProducts();
-    if(!activeTab){
-      setActiveTab(categories[0]?.id)
+    if (categories.length > 0) {
+      getProducts();
+      if (activeTab === null) {
+        setActiveTab(categories[0]?.id);
+      }
     }
-  }, [activeTab]);
+  }, [categories, activeTab]);
   return (
     <View className=" w-[90%] m-auto my-5 px-2 rounded-lg flex-col">
       <Text className="text-xl font-bold">Shop By Categories</Text>
