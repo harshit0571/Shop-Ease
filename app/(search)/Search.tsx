@@ -11,11 +11,14 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PreviousSearches from "@/components/search/PreviousSearches";
+import Searches from "@/components/search/Searches";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
 const Search = () => {
   const router = useRouter();
   const [searchVal, setSearchVal] = useState<string>("");
-
+  const [isTyping, setIsTyping] = useState(false);
   useEffect(() => {
     const loadSearchVal = async () => {
       try {
@@ -32,6 +35,8 @@ const Search = () => {
   }, []);
 
   const handleSearchChange = (value: string) => {
+    setIsTyping(value.length > 0);
+    getSearches();
     setSearchVal(value);
   };
   const [buttonClicked, setButtonClicked] = useState(0);
@@ -49,6 +54,27 @@ const Search = () => {
       Keyboard.dismiss();
     } catch (error) {
       console.error("Failed to save search value to storage:", error);
+    }
+  };
+  const [searchData, setSearchData] = useState<any>([]);
+  const getSearches = async () => {
+    try {
+      const productsRef = collection(db, "Products");
+      const q = query(
+        productsRef,
+        where("name", ">=", searchVal),
+        where("name", "<=", searchVal + "z")
+      );
+      const data = await getDocs(q);
+      const array = data.docs.map((doc) => ({
+        id: doc.id,
+        name: doc.data().name,
+      }));
+      //   console.log(array, "s");
+      setSearchData(array);
+    } catch (error) {
+      console.error("Error fetching products: ", error);
+      return [];
     }
   };
 
@@ -70,7 +96,11 @@ const Search = () => {
           <AntDesign name="search1" size={30} color={"black"} />
         </TouchableOpacity>
       </View>
-      { <PreviousSearches reRender={buttonClicked}/>}
+      {isTyping ? (
+        <Searches searchData={searchData} />
+      ) : (
+        <PreviousSearches reRender={buttonClicked} />
+      )}
     </SafeAreaView>
   );
 };
