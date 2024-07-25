@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 
 const PreviousSearches = ({ reRender }: { reRender: number }) => {
   const [searches, setSearches] = useState<string[]>([]);
@@ -34,6 +35,7 @@ const PreviousSearches = ({ reRender }: { reRender: number }) => {
       console.error("Failed to save updated searches to storage:", error);
     }
   };
+  const router = useRouter();
 
   return (
     <View className="flex flex-col py-2 px-2 border-t-2 border-gray-400 w-[95%] m-auto mt-6">
@@ -43,7 +45,10 @@ const PreviousSearches = ({ reRender }: { reRender: number }) => {
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <View className="flex flex-row justify-between items-center mt-2">
-            <TouchableOpacity className="flex flex-row gap-1 items-center flex-1">
+            <TouchableOpacity
+              className="flex flex-row gap-1 items-center flex-1"
+              onPress={() => router.push("(search)/" + item + "/SearchPage")}
+            >
               <AntDesign name="search1" size={20} color={"purple"} />
               <Text className="text-lg text-purple-800">{item}</Text>
             </TouchableOpacity>

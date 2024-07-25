@@ -15,6 +15,7 @@ const ProductCardContainer = ({ productList }: propsInterface) => {
   console.log(productList);
   return (
     <View className="flex flex-row flex-wrap gap-3 mt-5">
+
       {productList?.map((product: productInterface) => (
         <ProductCard
           key={product.id}

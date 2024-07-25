@@ -25,16 +25,26 @@ const CategoryToggle = ({
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => (
-            <Pressable
-            className={`p-3 mx-2 rounded-full border-2 ${item.id === activeTab ? 'bg-red-500 text-white border-red-500' : 'border-black'}`}
+          <Pressable
+            className={`p-3 mx-2 rounded-full border-2 ${
+              item.id === activeTab
+                ? "bg-red-500 text-white border-red-500"
+                : "border-black"
+            }`}
             onPress={() => setActiveTab(item.id)}
             style={({ pressed }) => [
               {
-                backgroundColor: pressed ? 'rgba(255, 0, 0, 0.2)' : 'transparent',
+                backgroundColor: pressed
+                  ? "rgba(255, 0, 0, 0.2)"
+                  : "transparent",
               },
             ]}
           >
-            <Text className={`text-sm first-letter:uppercase ${item.id === activeTab ? 'font-bold text-white' : ''}`}>
+            <Text
+              className={`text-sm first-letter:uppercase ${
+                item.id === activeTab ? "font-bold text-white" : ""
+              }`}
+            >
               {item.name}
             </Text>
           </Pressable>

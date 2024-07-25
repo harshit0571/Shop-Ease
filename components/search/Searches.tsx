@@ -18,8 +18,8 @@ const Searches = ({ searchData }: { searchData: any }) => {
               className="flex flex-row gap-1 items-center flex-1"
               onPress={() => router.push(item.id + "/Display")}
             >
-              <AntDesign name="search1" size={20} color={"purple"} />
-              <Text className="text-lg text-purple-800">{item.name}</Text>
+              <AntDesign name="search1" size={20} color={"black"} />
+              <Text className="text-lg ">{item.name}</Text>
             </TouchableOpacity>
             {/* <TouchableOpacity onPress={() => handleDelete(item)}>
               <AntDesign name="close" size={20} color={"purple"} />
