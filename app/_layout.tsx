@@ -49,6 +49,7 @@ function RootLayoutNav() {
                 name="(products)"
                 options={{ headerShown: false }}
               />
+              <Stack.Screen name="Cart" options={{ headerShown: true }} />
             </Stack>
           </CategoriesProvider>
         </ReduxProvider>

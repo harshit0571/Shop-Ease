@@ -20,7 +20,9 @@ const Header = () => {
       </TouchableOpacity>
 
       <AntDesign name="bells" size={30} />
-      <AntDesign name="shoppingcart" size={30} />
+      <TouchableOpacity onPress={() => router.push("/Cart")}>
+        <AntDesign name="shoppingcart" size={30} />
+      </TouchableOpacity>
     </View>
   );
 };

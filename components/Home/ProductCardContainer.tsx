@@ -3,7 +3,7 @@ import React from "react";
 import ProductCard from "../common/ProductCard";
 
 interface propsInterface {
-  productList: productInterface[];
+  productList: any;
 }
 interface productInterface {
   title: string;
@@ -27,7 +27,11 @@ const ProductCardContainer = ({ productList }: propsInterface) => {
         ))
       ) : (
         <View className="flex justify-center items-center  w-full">
-          <ActivityIndicator className="text-red-300 m-auto" color={"red"} size={"large"}/>
+          <ActivityIndicator
+            className="text-red-300 m-auto"
+            color={"red"}
+            size={"large"}
+          />
         </View>
       )}
     </View>

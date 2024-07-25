@@ -5,7 +5,7 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
-  Pressable,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
@@ -14,15 +14,23 @@ import { db } from "@/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { Image } from "expo-image";
 import Carousel from "react-native-reanimated-carousel";
-import { getCategories } from "@/context/CategoriesProvider";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "@/redux/cart/cartSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { useAuth } from "@clerk/clerk-expo";
 
 const Index = () => {
   const { productId } = useLocalSearchParams();
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<any>(null);
   const width = Dimensions.get("window").width;
+  const dispatch = useDispatch<AppDispatch>();
+  const { userId } = useAuth();
+  const cartItems = useSelector((state: RootState) => state.cart.cartItems);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -55,16 +63,38 @@ const Index = () => {
     const rating = product?.rating || 0;
     const color = [
       "bg-red-500",
-      ["bg-orange-500"],
-      ["bg-orange-400"],
-      ["bg-yellow-300"],
-      ["bg-green-300"],
-      ["bg-green-500"],
+      "bg-orange-500",
+      "bg-orange-400",
+      "bg-yellow-300",
+      "bg-green-300",
+      "bg-green-500",
     ];
     if (rating === 0) {
       return "bg-gray-400";
     }
     return color[Math.round(rating)];
+  };
+
+  const isAlreadyInCart = (size: string | null) => {
+    return cartItems.some(
+      (item) => item.pID === productId && item.size === size
+    );
+  };
+
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+
+    const cartItem = {
+      productId: productId?.toString() || "",
+      userId: userId?.toString() || "",
+      quantity,
+      size: selectedSize,
+    };
+
+    dispatch(addToCart(cartItem));
   };
 
   return (
@@ -166,23 +196,63 @@ const Index = () => {
 
             <ScrollView
               horizontal
-              className="flex px-1  mt-4 flex-row gap-3 overflow-auto"
+              className="flex px-1 mt-4 flex-row gap-3 overflow-auto"
             >
               {product?.sizes.map((size: string) => (
                 <TouchableOpacity
-                  className="p-3 bg-gray-200 min-w-[50px] min-h-[50px] flex justify-center items-center"
                   key={size}
+                  className={`p-3 ${
+                    selectedSize === size ? "bg-blue-500" : "bg-gray-200"
+                  } min-w-[50px] min-h-[50px] flex justify-center items-center`}
+                  onPress={() => setSelectedSize(size)}
                 >
-                  <Text className="">{size}</Text>
+                  <Text className={selectedSize === size ? "text-white" : ""}>
+                    {size}
+                  </Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
           </View>
 
-          <View className="abs"></View>
+          <View className="flex flex-row justify-between px-3 my-5 gap-10 items-baseline">
+            {!isAlreadyInCart(selectedSize) ? (
+              <>
+                <View className="flex flex-row items-center gap-3">
+                  <TouchableOpacity
+                    onPress={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                  >
+                    <AntDesign name="minussquareo" size={35} />
+                  </TouchableOpacity>
+                  <Text className="text-xl font-bold">{quantity}</Text>
+                  <TouchableOpacity
+                    onPress={() => setQuantity((prev) => prev + 1)}
+                  >
+                    <AntDesign name="plussquareo" size={35} />
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity
+                  className="py-2 px-3 rounded-full flex-1 bg-red-500"
+                  onPress={handleAddToCart}
+                >
+                  <Text className="text-xl text-white text-center">
+                    Add to cart
+                  </Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <TouchableOpacity className="py-2 px-3 rounded-full flex-1 bg-gray-500">
+                <Text className="text-xl text-white text-center">
+                  Already in Cart
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </ScrollView>
       ) : (
-        <ActivityIndicator size={40} />
+        <View className="w-full flex justify-center items-center mt-10">
+          <ActivityIndicator size={"large"} color={"red"} />
+        </View>
       )}
     </>
   );
