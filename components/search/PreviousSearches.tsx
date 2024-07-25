@@ -11,7 +11,7 @@ const PreviousSearches = ({ reRender }: { reRender: number }) => {
       try {
         const storedSearches = await AsyncStorage.getItem("searchArray");
         if (storedSearches) {
-          setSearches(JSON.parse(storedSearches));
+          setSearches(JSON.parse(storedSearches).reverse());
         }
         console.log(storedSearches, "dss");
       } catch (error) {

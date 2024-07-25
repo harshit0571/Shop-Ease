@@ -6,6 +6,10 @@ const _layout = () => {
   return (
     <Stack>
       <Stack.Screen name="Search" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="[searchText]/SearchPage"
+        options={{ title: "Search Results", headerBackTitle: "" }}
+      />
     </Stack>
   );
 };

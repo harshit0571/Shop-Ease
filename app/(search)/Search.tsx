@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PreviousSearches from "@/components/search/PreviousSearches";
 import Searches from "@/components/search/Searches";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
 const Search = () => {
@@ -21,12 +21,6 @@ const Search = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [searchData, setSearchData] = useState<any>([]);
   const [buttonClicked, setButtonClicked] = useState(0);
-
-  const handleSearchChange = (event: any) => {
-    const value: string = event.target.value;
-    setIsTyping(true);
-    setSearchVal(value);
-  };
 
   const handleSearchSubmit = async () => {
     try {
@@ -39,6 +33,7 @@ const Search = () => {
       setSearchVal("");
       setButtonClicked(buttonClicked + 1);
       Keyboard.dismiss();
+      router.push("(search)/" + searchVal + "/SearchPage");
     } catch (error) {
       console.error("Failed to save search value to storage:", error);
     }
@@ -52,7 +47,8 @@ const Search = () => {
           const q = query(
             productsRef,
             where("name", ">=", searchVal),
-            where("name", "<=", searchVal + "z")
+            where("name", "<=", searchVal + "z"),
+            limit(10)
           );
           const data = await getDocs(q);
           const array = data.docs.map((doc) => ({
@@ -84,7 +80,7 @@ const Search = () => {
           onChangeText={(e) => {
             setSearchVal(e);
             console.log(e);
-            setIsTyping(e.length>0);
+            setIsTyping(e.length > 0);
           }} // Use onChange instead of onChangeText
           onSubmitEditing={handleSearchSubmit}
           className="bg-gray-200 w-auto flex-1 p-2 py-3 rounded-lg"
