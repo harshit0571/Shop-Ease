@@ -19,27 +19,14 @@ const Search = () => {
   const router = useRouter();
   const [searchVal, setSearchVal] = useState<string>("");
   const [isTyping, setIsTyping] = useState(false);
-  useEffect(() => {
-    const loadSearchVal = async () => {
-      try {
-        const storedSearchVal = await AsyncStorage.getItem("searchVal");
-        if (storedSearchVal) {
-          setSearchVal(storedSearchVal);
-        }
-      } catch (error) {
-        console.error("Failed to load search value from storage:", error);
-      }
-    };
+  const [searchData, setSearchData] = useState<any>([]);
+  const [buttonClicked, setButtonClicked] = useState(0);
 
-    loadSearchVal();
-  }, []);
-
-  const handleSearchChange = (value: string) => {
-    setIsTyping(value.length > 0);
-    getSearches();
+  const handleSearchChange = (event: any) => {
+    const value: string = event.target.value;
+    setIsTyping(true);
     setSearchVal(value);
   };
-  const [buttonClicked, setButtonClicked] = useState(0);
 
   const handleSearchSubmit = async () => {
     try {
@@ -56,27 +43,34 @@ const Search = () => {
       console.error("Failed to save search value to storage:", error);
     }
   };
-  const [searchData, setSearchData] = useState<any>([]);
-  const getSearches = async () => {
-    try {
-      const productsRef = collection(db, "Products");
-      const q = query(
-        productsRef,
-        where("name", ">=", searchVal),
-        where("name", "<=", searchVal + "z")
-      );
-      const data = await getDocs(q);
-      const array = data.docs.map((doc) => ({
-        id: doc.id,
-        name: doc.data().name,
-      }));
-      //   console.log(array, "s");
-      setSearchData(array);
-    } catch (error) {
-      console.error("Error fetching products: ", error);
-      return [];
+
+  useEffect(() => {
+    if (searchVal.length > 0) {
+      const fetchSearches = async () => {
+        try {
+          const productsRef = collection(db, "Products");
+          const q = query(
+            productsRef,
+            where("name", ">=", searchVal),
+            where("name", "<=", searchVal + "z")
+          );
+          const data = await getDocs(q);
+          const array = data.docs.map((doc) => ({
+            id: doc.id,
+            name: doc.data().name,
+          }));
+          setSearchData(array);
+        } catch (error) {
+          console.error("Error fetching products: ", error);
+          setSearchData([]);
+        }
+      };
+
+      fetchSearches();
+    } else {
+      setSearchData([]);
     }
-  };
+  }, [searchVal]);
 
   return (
     <SafeAreaView>
@@ -87,9 +81,12 @@ const Search = () => {
         <TextInput
           placeholder="search"
           value={searchVal}
-          onChangeText={handleSearchChange}
+          onChangeText={(e) => {
+            setSearchVal(e);
+            console.log(e);
+            setIsTyping(e.length>0);
+          }} // Use onChange instead of onChangeText
           onSubmitEditing={handleSearchSubmit}
-          keyboardAppearance="light"
           className="bg-gray-200 w-auto flex-1 p-2 py-3 rounded-lg"
         />
         <TouchableOpacity onPress={handleSearchSubmit} className=" rounded-lg">
