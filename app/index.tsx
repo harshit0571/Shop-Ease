@@ -19,7 +19,7 @@ const index = () => {
     return <Redirect href={"/sign-up"} />;
   }
 
-  return <Redirect href={"/favourites"} />;
+  return <Redirect href={"/main"} />;
 };
 
 export default index;

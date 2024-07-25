@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomHeader from "@/components/Product/CustomHeader";
 import CategoriesSection from "@/components/Home/CategoriesSection";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import {
   collection,
   getDocFromCache,
@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import ProductCard from "@/components/common/ProductCard";
+import { fetchFavourites } from "@/redux/favourites/favouritesSlice";
 
 const favourites = () => {
   const favourites = useSelector(
@@ -21,7 +22,11 @@ const favourites = () => {
   );
 
   const [products, setProducts] = useState<any>([]); // New state for products
+  const dispatch = useDispatch<AppDispatch>();
 
+  useEffect(() => {
+    dispatch(fetchFavourites());
+  }, [dispatch]);
   useEffect(() => {
     const getProducts = async () => {
       if (favourites.length > 0) {

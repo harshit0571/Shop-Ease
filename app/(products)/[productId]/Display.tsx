@@ -182,7 +182,7 @@ const Index = () => {
           <View className="abs"></View>
         </ScrollView>
       ) : (
-        <ActivityIndicator />
+        <ActivityIndicator size={40} />
       )}
     </>
   );
