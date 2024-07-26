@@ -65,6 +65,7 @@ const Orders = () => {
             );
 
             return {
+              oID: docs.id,
               ...orderData,
               products: filteredProducts,
             };
@@ -89,7 +90,7 @@ const Orders = () => {
     return (
       <TouchableOpacity
         className="flex flex-row justify-between items-center gap-1 border-b border-gray-200 p-4"
-        onPress={() => router.push("(orders)/123/")}
+        onPress={() => router.push("(orders)/" + item.oID + "/")}
       >
         <View className="mr-2">
           <Image
