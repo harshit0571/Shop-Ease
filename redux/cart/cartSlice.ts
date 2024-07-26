@@ -21,6 +21,7 @@ interface OrderItem {
   addressId?: string;
   totalPrice?: number;
   discountedPrice?: number;
+  paymentMode?: string;
 }
 
 interface CartState {

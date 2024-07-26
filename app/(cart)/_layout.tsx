@@ -14,6 +14,10 @@ const _layout = () => {
         name="Address"
         options={{ header: () => <CommonHeader title="Address" /> }}
       />
+      <Stack.Screen
+        name="Payment"
+        options={{ header: () => <CommonHeader title="Payment" /> }}
+      />
     </Stack>
   );
 };
