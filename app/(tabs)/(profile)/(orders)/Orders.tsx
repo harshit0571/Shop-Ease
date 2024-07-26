@@ -1,4 +1,11 @@
-import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   collection,
@@ -10,14 +17,14 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useAuth } from "@clerk/clerk-expo";
-import { TouchableOpacity } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useRouter } from "expo-router";
 
 const Orders = () => {
   const [orderList, setOrderList] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const { userId } = useAuth();
-
+  const router = useRouter();
   useEffect(() => {
     const getOrders = async () => {
       try {
@@ -75,32 +82,46 @@ const Orders = () => {
     getOrders();
   }, [userId]);
 
-  const renderItem = ({ item }: { item: any }) => (
-    <View className="flex flex-row justify-between items-center gap-1 border-b border-gray-200 p-4">
-      <View>
-        <Image
-          source={{ uri: item.products[0]?.images[0] }}
-          className="min-w-[100px] min-h-[100px]"
-        />
-      </View>
-      <View className="flex-1">
-        <Text className="text-xl font-bold">{item.products[0]?.name}</Text>
-        <Text className="text-lg text-gray-500">
-          Size: {item.orderDetails[0]?.size}
-        </Text>
-        <Text className="text-lg">
-          Quantity: {item.orderDetails[0]?.quantity}
-        </Text>
-        <Text className="text-lg text-red-500 font-semibold">
-          ${item.discountedPrice}
-        </Text>
-      </View>
-      {/* Uncomment and implement if needed */}
-      {/* <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
-        <AntDesign name="delete" size={30} color="red" />
-      </TouchableOpacity> */}
-    </View>
-  );
+  const renderItem = ({ item }: { item: any }) => {
+    const primaryProduct = item.products[0];
+    const additionalItemsCount = item.products.length - 1;
+
+    return (
+      <TouchableOpacity
+        className="flex flex-row justify-between items-center gap-1 border-b border-gray-200 p-4"
+        onPress={() => router.push("(orders)/123/")}
+      >
+        <View className="mr-2">
+          <Image
+            source={{ uri: primaryProduct?.images[0] }}
+            className="min-w-[100px] min-h-[100px]"
+          />
+        </View>
+        <View className="flex-1">
+          <Text className="text-xl font-bold">{primaryProduct?.name}</Text>
+          <Text className="text-lg text-gray-500">
+            Size: {item.orderDetails[0]?.size}
+          </Text>
+          <Text className="text-lg">
+            Quantity: {item.orderDetails[0]?.quantity}
+          </Text>
+          <Text className="text-lg text-red-500 font-semibold">
+            ${item.discountedPrice}
+          </Text>
+          {additionalItemsCount > 0 && (
+            <Text className="text-gray-600 text-lg">
+              +{additionalItemsCount} more item
+              {additionalItemsCount > 1 ? "s" : ""}
+            </Text>
+          )}
+        </View>
+        {/* Uncomment and implement if needed */}
+        {/* <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
+          <AntDesign name="delete" size={30} color="red" />
+        </TouchableOpacity> */}
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View>

@@ -51,7 +51,7 @@ const Profile = () => {
     {
       id: "2",
       name: "Orders",
-      link: "/Orders",
+      link: "(orders)/Orders",
       icon: "shoppingcart",
     },
     {

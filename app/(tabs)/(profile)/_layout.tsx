@@ -19,8 +19,8 @@ const _layout = () => {
         options={{ header: () => <CommonHeader title="Your Addresses" /> }}
       />
       <Stack.Screen
-        name="Orders"
-        options={{ header: () => <CommonHeader title="Your Orders" /> }}
+        name="(orders)"
+        options={{ headerShown:false}}
       />
     </Stack>
   );
