@@ -10,6 +10,9 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { useRouter } from "expo-router";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { setOrderData } from "@/redux/cart/cartSlice";
 
 const Cart = ({ price }: { price: number }) => {
   // ref
@@ -17,7 +20,7 @@ const Cart = ({ price }: { price: number }) => {
 
   // variables
   const snapPoints = useMemo(() => ["100%", "100%"], []);
-
+  const dispatch = useDispatch<AppDispatch>();
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -75,7 +78,15 @@ const Cart = ({ price }: { price: number }) => {
                 </View>
                 <TouchableOpacity
                   className="bg-red-500 py-2 px-6 mb-6 w-max rounded-full"
-                  onPress={() => router.push("/Address")}
+                  onPress={() => {
+                    dispatch(
+                      setOrderData({
+                        totalPrice: price,
+                        discountedPrice: price,
+                      })
+                    );
+                    router.push("/Address");
+                  }}
                 >
                   <Text className="text-white text-xl text-center">
                     Proceed to Checkout

@@ -17,9 +17,15 @@ interface CartItem {
   size: string;
   date: string;
 }
+interface OrderItem {
+  addressId?: string;
+  totalPrice?: number;
+  discountedPrice?: number;
+}
 
 interface CartState {
   cartItems: CartItem[];
+  orderData: OrderItem | null;
 }
 
 export const fetchCartItems = createAsyncThunk(
@@ -76,12 +82,24 @@ export const removeFromCart = createAsyncThunk(
 
 const initialState: CartState = {
   cartItems: [],
+  orderData: null,
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    setOrderData: (state, action: PayloadAction<OrderItem>) => {
+      if (state.orderData) {
+        state.orderData = {
+          ...state.orderData,
+          ...action.payload,
+        };
+      } else {
+        state.orderData = action.payload as OrderItem;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(
       fetchCartItems.fulfilled,
@@ -106,4 +124,5 @@ const cartSlice = createSlice({
   },
 });
 
+export const { setOrderData } = cartSlice.actions;
 export default cartSlice.reducer;
