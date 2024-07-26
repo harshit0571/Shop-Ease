@@ -11,8 +11,8 @@ const _layout = () => {
         options={{ header: () => <CommonHeader title="Your Cart" /> }}
       />
       <Stack.Screen
-        name="Checkout"
-        options={{ header: () => <CommonHeader title="Checkout" /> }}
+        name="Address"
+        options={{ header: () => <CommonHeader title="Address" /> }}
       />
     </Stack>
   );

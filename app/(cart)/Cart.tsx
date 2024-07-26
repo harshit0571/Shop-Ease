@@ -74,7 +74,19 @@ const Cart = () => {
     </View>
   );
 
-  const [totalPrice, setTotalPrice]=useState(0)
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    const getTotal = () => {
+      const price = cartData?.reduce((acc: number, arr: any) => {
+        acc = acc + arr.price * arr.quantity;
+        return acc;
+      }, 0);
+      setTotalPrice(price);
+    };
+
+    getTotal();
+  }, [cartData]);
 
   return (
     <View className="flex-1  bg-white pt-7">
@@ -93,7 +105,7 @@ const Cart = () => {
         </View>
       )}
       <View className="flex-1  bg-red-300 absolute bottom-0 w-full min-h-[300px] h-max">
-        <CheckoutModal />
+        <CheckoutModal price={totalPrice} />
       </View>
     </View>
   );

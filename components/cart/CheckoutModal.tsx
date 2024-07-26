@@ -11,7 +11,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useRouter } from "expo-router";
 
-const Cart = () => {
+const Cart = ({ price }: { price: number }) => {
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -26,7 +26,7 @@ const Cart = () => {
     console.log("handleSheetChanges", index);
   }, []);
 
-  const router=useRouter()
+  const router = useRouter();
   // renders
   return (
     <GestureHandlerRootView className="flex-1">
@@ -60,7 +60,7 @@ const Cart = () => {
                 <View className="flex flex-col w-full px-7">
                   <View className="flex w-full flex-row justify-between">
                     <Text className="text-lg text-gray-500">Subtotal</Text>
-                    <Text className="text-lg text-gray-500">$99.99</Text>
+                    <Text className="text-lg text-gray-500">${price}</Text>
                   </View>
 
                   <View className="flex w-full flex-row justify-between">
@@ -70,12 +70,12 @@ const Cart = () => {
 
                   <View className="flex w-full flex-row justify-between">
                     <Text className="text-lg text-gray-500">Total</Text>
-                    <Text className="text-lg text-gray-500">$99.99</Text>
+                    <Text className="text-lg text-gray-500">${price}</Text>
                   </View>
                 </View>
                 <TouchableOpacity
                   className="bg-red-500 py-2 px-6 mb-6 w-max rounded-full"
-                  onPress={()=>router.push('/Checkout')}
+                  onPress={() => router.push("/Address")}
                 >
                   <Text className="text-white text-xl text-center">
                     Proceed to Checkout
