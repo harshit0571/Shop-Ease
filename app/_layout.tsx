@@ -54,6 +54,14 @@ function RootLayoutNav() {
                 name="Cart"
                 options={{ header: () => <CommonHeader title="Your Cart" /> }}
               />
+                 <Stack.Screen
+                name="(search)"
+                options={{ headerShown: false }}
+              />
+                   <Stack.Screen
+                name="(auth)/sign-up"
+                options={{ headerShown: false }}
+              />
             </Stack>
           </CategoriesProvider>
         </ReduxProvider>

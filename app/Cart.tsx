@@ -1,4 +1,11 @@
-import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -20,7 +27,7 @@ const Cart = () => {
     }
   }, [dispatch, userId]);
 
-  const [cartData, setCartData] = useState<any[]>([]);
+  const [cartData, setCartData] = useState<any>(null);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -48,9 +55,12 @@ const Cart = () => {
   const renderItem = ({ item }: { item: any }) => (
     <View className="flex flex-row justify-between items-center gap-1 border-b border-gray-200 p-4">
       <View>
-        <Image source={{ uri: item.images[0] }} className="min-w-[100px]  min-h-[100px] " />
+        <Image
+          source={{ uri: item.images[0] }}
+          className="min-w-[100px]  min-h-[100px] "
+        />
       </View>
-      <View  className="flex-1">
+      <View className="flex-1">
         <Text className="text-xl font-bold">{item.name}</Text>
         <Text className="text-lg text-gray-500">Size: {item.size}</Text>
         <Text className="text-lg">Quantity: {item.quantity}</Text>
@@ -66,14 +76,21 @@ const Cart = () => {
 
   return (
     <View className="flex-1 bg-white">
-      <FlatList
-        data={cartData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={
-          <Text className="text-center mt-10">Your cart is empty.</Text>
-        }
-      />
+      {cartData ? (
+        <FlatList
+          data={cartData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          ListEmptyComponent={
+            <Text className="text-center mt-10">Your cart is empty.</Text>
+          }
+        />
+      ) : (
+        <View className="mt-10">
+                  <ActivityIndicator size={"large"} color={"red"} />
+
+          </View>
+      )}
     </View>
   );
 };
