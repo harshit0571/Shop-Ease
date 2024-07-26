@@ -14,6 +14,10 @@ const _layout = () => {
         name="Profile"
         options={{ header: () => <CommonHeader title="Your Profile" /> }}
       />
+       <Stack.Screen
+        name="Addresses"
+        options={{ header: () => <CommonHeader title="Your Addresses" /> }}
+      />
     </Stack>
   );
 };

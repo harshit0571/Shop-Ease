@@ -3,13 +3,11 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    Button,
     ActivityIndicator,
     Alert,
   } from "react-native";
   import React, { useEffect, useState } from "react";
   import { useRouter } from "expo-router";
-  import AntDesign from "@expo/vector-icons/AntDesign";
   import { useAuth } from "@clerk/clerk-expo";
   import { doc, getDoc, setDoc } from "firebase/firestore";
   import { db } from "@/firebaseConfig";
@@ -68,43 +66,46 @@ import {
     };
   
     return (
-      <View className="flex-1 bg-white p-4">
+      <View className="flex-1 bg-gray-100 p-6">
         {userData ? (
           <>
-            <View className="mb-4">
-              <Text className="text-gray-500 font-bold">Name:</Text>
+            <View className="mb-6">
+              <Text className="text-gray-700 text-sm font-medium">Name:</Text>
               {isEditing ? (
                 <TextInput
                   value={name}
                   onChangeText={setName}
-                  className="border-gray-300 p-2 py-4 bg-gray-100 rounded"
+                  className="border border-gray-300 p-3 mt-2 bg-white rounded-lg shadow-sm"
+                  placeholder="Enter your name"
                 />
               ) : (
-                <Text className="text-lg mt-1">{userData.name}</Text>
+                <Text className="text-xl mt-2 text-gray-800">{userData.name}</Text>
               )}
             </View>
-            <View className="mb-4">
-              <Text className="text-gray-500 font-bold">Email:</Text>
+            <View className="mb-6">
+              <Text className="text-gray-700 text-sm font-medium">Email:</Text>
               {isEditing ? (
                 <TextInput
                   value={email}
                   onChangeText={setEmail}
-                  className="border-gray-300 p-2 py-4 bg-gray-100 rounded"
+                  editable={false}
+                  className="border border-gray-300 p-3 mt-2 bg-gray-200 rounded-lg"
                 />
               ) : (
-                <Text className="text-lg mt-1">{userData.email}</Text>
+                <Text className="text-xl mt-2 text-gray-800">{userData.email}</Text>
               )}
             </View>
-            <View className="mb-4">
-              <Text className="text-gray-500 font-bold">Phone Number:</Text>
+            <View className="mb-6">
+              <Text className="text-gray-700 text-sm font-medium">Phone Number:</Text>
               {isEditing ? (
                 <TextInput
                   value={phone}
                   onChangeText={setPhone}
-                  className="border-gray-300 p-2 py-4 bg-gray-100 rounded"
+                  className="border border-gray-300 p-3 mt-2 bg-white rounded-lg shadow-sm"
+                  placeholder="Enter your phone number"
                 />
               ) : (
-                <Text className="text-lg mt-1">{userData.phone || "N/A"} </Text>
+                <Text className="text-xl mt-2 text-gray-800">{userData.phone || "N/A"}</Text>
               )}
             </View>
             <TouchableOpacity
@@ -115,7 +116,7 @@ import {
                   setIsEditing(true);
                 }
               }}
-              className="bg-red-500 py-3 px-6 rounded-full mt-4 self-center"
+              className="bg-red-500 py-3 px-8 rounded-full mt-4 self-center"
             >
               <Text className="text-white text-lg font-semibold">
                 {isEditing ? "Save Changes" : "Edit Profile"}
