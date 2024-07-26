@@ -75,7 +75,7 @@ const Cart = () => {
   );
 
   return (
-    <View className="flex-1  bg-white">
+    <View className="flex-1  bg-white pt-7">
       {cartData ? (
         <FlatList
           data={cartData}
@@ -90,8 +90,9 @@ const Cart = () => {
           <ActivityIndicator size={"large"} color={"red"} />
         </View>
       )}
-
-      <CheckoutModal />
+      <View className="flex-1  bg-red-300 absolute bottom-0 w-full min-h-[300px] h-max">
+        <CheckoutModal />
+      </View>
     </View>
   );
 };
