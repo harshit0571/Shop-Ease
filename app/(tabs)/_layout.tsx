@@ -46,6 +46,7 @@ const _layout = () => {
             </View>
           ),
           tabBarShowLabel: false,
+          
         }}
       />
       <Tabs.Screen

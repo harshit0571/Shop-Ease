@@ -4,6 +4,7 @@ import { Redirect, Slot, Stack } from "expo-router";
 import CategoriesProvider from "@/context/CategoriesProvider";
 import { ReduxProvider } from "@/redux/StoreProvider";
 import CommonHeader from "@/components/common/CommonHeader";
+import Header from "@/components/Home/Header";
 
 const tokenCache = {
   async getToken(key: string) {
@@ -45,7 +46,10 @@ function RootLayoutNav() {
         <ReduxProvider>
           <CategoriesProvider>
             <Stack screenOptions={{ headerShown: true }}>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="(tabs)"
+                options={{ headerShown: false }}
+              />
               <Stack.Screen
                 name="(products)"
                 options={{ headerShown: false }}

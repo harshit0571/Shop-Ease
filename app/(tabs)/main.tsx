@@ -54,8 +54,8 @@ const main = () => {
   }, [dispatch, userId]);
   return (
     <SafeAreaView className="flex-1">
+      <Header />
       <ScrollView>
-        <Header />
         <Jumbotron
           imageUrl="https://thumbs.dreamstime.com/b/red-converse-shoes-hanging-red-wall-pair-red-converse-shoes-suspended-red-wall-ai-generated-306691318.jpg"
           title="Converse X DRKSHDW"

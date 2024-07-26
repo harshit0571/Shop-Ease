@@ -66,11 +66,13 @@ const Payment = () => {
         paymentMode: selectedMode || "",
       })
     );
+    const filteredCartData = CartData.map(({ date, ...rest }) => rest);
 
     const docRef = await addDoc(collection(db, "orders"), {
       ...OrderData,
-      orderDetails: CartData,
+      orderDetails: filteredCartData,
       uid: userId,
+      date: new Date().toISOString(),
     });
 
     router.push("/OrderConfirmed");
