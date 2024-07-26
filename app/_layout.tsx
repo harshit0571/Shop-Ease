@@ -45,7 +45,7 @@ function RootLayoutNav() {
         <ReduxProvider>
           <CategoriesProvider>
             <Stack screenOptions={{ headerShown: true }}>
-              <Stack.Screen name="(tabs)"    options={{ headerShown: false }}/>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen
                 name="(products)"
                 options={{ headerShown: false }}
@@ -54,11 +54,8 @@ function RootLayoutNav() {
                 name="Cart"
                 options={{ header: () => <CommonHeader title="Your Cart" /> }}
               />
-                 <Stack.Screen
-                name="(search)"
-                options={{ headerShown: false }}
-              />
-                   <Stack.Screen
+              <Stack.Screen name="(search)" options={{ headerShown: false }} />
+              <Stack.Screen
                 name="(auth)/sign-up"
                 options={{ headerShown: false }}
               />

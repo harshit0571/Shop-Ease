@@ -14,7 +14,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { useAuth } from "@clerk/clerk-expo";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
-
+import CheckoutModal from "@/components/cart/CheckoutModal";
 const Cart = () => {
   const dispatch = useDispatch<AppDispatch>();
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
@@ -75,7 +75,7 @@ const Cart = () => {
   );
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1  bg-white">
       {cartData ? (
         <FlatList
           data={cartData}
@@ -87,10 +87,11 @@ const Cart = () => {
         />
       ) : (
         <View className="mt-10">
-                  <ActivityIndicator size={"large"} color={"red"} />
-
-          </View>
+          <ActivityIndicator size={"large"} color={"red"} />
+        </View>
       )}
+
+      <CheckoutModal />
     </View>
   );
 };
