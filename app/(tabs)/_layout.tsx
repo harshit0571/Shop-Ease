@@ -4,7 +4,6 @@ import { Tabs } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 const _layout = () => {
-
   return (
     <Tabs
       screenOptions={{
@@ -66,7 +65,7 @@ const _layout = () => {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="(profile)"
         options={{
           tabBarIcon: ({ focused }) => (
             <View
