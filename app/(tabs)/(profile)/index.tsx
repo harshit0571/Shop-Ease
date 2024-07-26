@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import FontAwesome from "@expo/vector-icons/FontAwesome"; // Import additional icons if needed
 
 const Profile = () => {
   const { signOut } = useClerk();
@@ -45,22 +46,28 @@ const Profile = () => {
       id: "1",
       name: "Profile",
       link: "/Profile",
+      icon: "user",
     },
     {
       id: "2",
       name: "Orders",
       link: "/Orders",
+      icon: "shoppingcart",
     },
     {
       id: "3",
       name: "Saved Addresses",
       link: "/Addresses",
+      icon: "home",
     },
   ];
 
   const RenderItem = ({ item }: { item: any }) => (
-    <TouchableOpacity className="flex-row items-center w-full h-max shadow-lg border-b-2 border-gray-100 p-4 mb-2 rounded">
-      <AntDesign name="user" color={"red"} size={30} />
+    <TouchableOpacity
+      onPress={() => router.push(item.link)}
+      className="flex-row items-center w-full h-max shadow-lg border-b-2 border-gray-100 p-4 mb-4 rounded"
+    >
+      <AntDesign name={item.icon} color={"red"} size={30} />
       <View className="flex-1 ml-3">
         <Text className="text-lg text-gray-700">{item?.name}</Text>
       </View>
@@ -71,7 +78,7 @@ const Profile = () => {
   return (
     <View className="flex-1 bg-white">
       {userData ? (
-        <View className="flex-1  items-center p-4">
+        <View className="flex-1 p-4">
           <View className="flex-col justify-center items-center mb-5">
             <TouchableOpacity className="bg-red-500 py-7 px-10 rounded-full">
               <Text className="text-white text-3xl font-bold">H</Text>
@@ -87,9 +94,10 @@ const Profile = () => {
             onPress={() => {
               signOut();
             }}
-            className="mt-4"
+            className="mt-4 flex-row items-center justify-center"
           >
-            <Text className="text-red-500">Sign out</Text>
+            <AntDesign name="logout" color={"red"} size={30} />
+            <Text className="text-red-500 ml-2">Sign out</Text>
           </TouchableOpacity>
         </View>
       ) : (

@@ -10,6 +10,10 @@ const _layout = () => {
         name="index"
         options={{ header: () => <CommonHeader title="Profile" /> }}
       />
+      <Stack.Screen
+        name="Profile"
+        options={{ header: () => <CommonHeader title="Your Profile" /> }}
+      />
     </Stack>
   );
 };
