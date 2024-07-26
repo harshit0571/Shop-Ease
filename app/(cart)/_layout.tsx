@@ -18,6 +18,10 @@ const _layout = () => {
         name="Payment"
         options={{ header: () => <CommonHeader title="Payment" /> }}
       />
+      <Stack.Screen
+        name="OrderConfirmed"
+        options={{ headerShown:false }}
+      />
     </Stack>
   );
 };
