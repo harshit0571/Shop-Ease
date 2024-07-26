@@ -74,6 +74,8 @@ const Cart = () => {
     </View>
   );
 
+  const [totalPrice, setTotalPrice]=useState(0)
+
   return (
     <View className="flex-1  bg-white pt-7">
       {cartData ? (

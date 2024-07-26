@@ -50,10 +50,7 @@ function RootLayoutNav() {
                 name="(products)"
                 options={{ headerShown: false }}
               />
-              <Stack.Screen
-                name="Cart"
-                options={{ header: () => <CommonHeader title="Your Cart" /> }}
-              />
+              <Stack.Screen name="(cart)" options={{ headerShown: false }} />
               <Stack.Screen name="(search)" options={{ headerShown: false }} />
               <Stack.Screen
                 name="(auth)/sign-up"
