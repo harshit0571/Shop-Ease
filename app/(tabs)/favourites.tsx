@@ -24,7 +24,7 @@ const Favourites = () => {
   );
   const { userId } = useAuth();
   console.log(userId, "id");
-  const [products, setProducts] = useState<any>([]); // New state for products
+  const [products, setProducts] = useState<any>(null); // New state for products
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -47,16 +47,15 @@ const Favourites = () => {
         }));
 
         setProducts(productsList);
-        console.log(productsList, "wdokring");
       }
     };
     getProducts();
   }, [favourites]);
   return (
-    <SafeAreaView className="flex justify-center flex-col p-5 flex-1 w-full">
+    <SafeAreaView className="flex flex-col p-5 flex-1 w-full">
       <Text className="text-3xl mb-10 text-center">My Favourites</Text>
-      {!favourites ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+      {!products ? (
+        <ActivityIndicator size="large" color="red" />
       ) : (
         <FlatList
           data={products}

@@ -1,6 +1,8 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
+import CustomHeader from "@/components/Product/CustomHeader";
+import CommonHeader from "@/components/common/CommonHeader";
 
 const _layout = () => {
   return (
@@ -8,7 +10,7 @@ const _layout = () => {
       <Stack.Screen name="Search" options={{ headerShown: false }} />
       <Stack.Screen
         name="[searchText]/SearchPage"
-        options={{ title: "Search Results", headerBackTitle: "" }}
+        options={{ header: () => <CommonHeader title="search results" /> }}
       />
     </Stack>
   );

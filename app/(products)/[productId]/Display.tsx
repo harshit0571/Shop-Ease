@@ -202,7 +202,7 @@ const Index = () => {
                 <TouchableOpacity
                   key={size}
                   className={`p-3 ${
-                    selectedSize === size ? "bg-blue-500" : "bg-gray-200"
+                    selectedSize === size ? "bg-red-500" : "bg-gray-200"
                   } min-w-[50px] min-h-[50px] flex justify-center items-center`}
                   onPress={() => setSelectedSize(size)}
                 >
@@ -248,6 +248,8 @@ const Index = () => {
               </TouchableOpacity>
             )}
           </View>
+
+          <View className="p-5 bg-red-500 fixed bottom-0"></View>
         </ScrollView>
       ) : (
         <View className="w-full flex justify-center items-center mt-10">

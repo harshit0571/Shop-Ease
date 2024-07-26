@@ -1,11 +1,15 @@
 import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/components/Home/Header";
 import Jumbotron from "@/components/Home/Jumbotron";
 import BrandsScroll from "@/components/Home/BrandsScroll";
 import CategoriesSection from "@/components/Home/CategoriesSection";
+import { useAuth, useClerk } from "@clerk/clerk-expo";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { fetchCartItems } from "@/redux/cart/cartSlice";
 
 const main = () => {
   const brands = [
@@ -40,6 +44,14 @@ const main = () => {
         "https://static.vecteezy.com/system/resources/previews/021/963/704/original/puma-logo-illustration-free-vector.jpg",
     },
   ];
+
+  const { userId } = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    if (userId) {
+      dispatch(fetchCartItems(userId.toString()));
+    }
+  }, [dispatch, userId]);
   return (
     <SafeAreaView className="flex-1">
       <ScrollView>

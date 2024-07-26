@@ -3,6 +3,7 @@ import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { Redirect, Slot, Stack } from "expo-router";
 import CategoriesProvider from "@/context/CategoriesProvider";
 import { ReduxProvider } from "@/redux/StoreProvider";
+import CommonHeader from "@/components/common/CommonHeader";
 
 const tokenCache = {
   async getToken(key: string) {
@@ -43,13 +44,16 @@ function RootLayoutNav() {
       <ClerkLoaded>
         <ReduxProvider>
           <CategoriesProvider>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(tabs)" />
+            <Stack screenOptions={{ headerShown: true }}>
+              <Stack.Screen name="(tabs)"    options={{ headerShown: false }}/>
               <Stack.Screen
                 name="(products)"
                 options={{ headerShown: false }}
               />
-              <Stack.Screen name="Cart" options={{ headerShown: true }} />
+              <Stack.Screen
+                name="Cart"
+                options={{ header: () => <CommonHeader title="Your Cart" /> }}
+              />
             </Stack>
           </CategoriesProvider>
         </ReduxProvider>

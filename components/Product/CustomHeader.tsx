@@ -29,7 +29,9 @@ const CustomHeader = () => {
 
   const handleAddToFavourites = () => {
     if (userId) {
-      dispatch(addToFavourites({ productId: productId as string, userId: userId }));
+      dispatch(
+        addToFavourites({ productId: productId as string, userId: userId })
+      );
     }
   };
 
@@ -57,21 +59,26 @@ const CustomHeader = () => {
       </TouchableOpacity>
       <StatusBar barStyle={"light-content"} />
       <Text className="text-2xl text-white font-bold">Product Details</Text>
-      {favourite ? (
-        <TouchableOpacity
-          className="flex justify-center items-center"
-          onPress={() => handleRemoveFromFavourites(favourite.id)}
-        >
-          <AntDesign name="heart" size={30} color={"white"} />
+      <View className="flex flex-row gap-3">
+        {favourite ? (
+          <TouchableOpacity
+            className="flex justify-center items-center"
+            onPress={() => handleRemoveFromFavourites(favourite.id)}
+          >
+            <AntDesign name="heart" size={30} color={"white"} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            className="flex justify-center items-center"
+            onPress={handleAddToFavourites}
+          >
+            <AntDesign name="hearto" size={30} color={"white"} />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity onPress={()=>router.push('/Cart')}>
+          <AntDesign name="shoppingcart" size={30} color={"white"} />
         </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          className="flex justify-center items-center"
-          onPress={handleAddToFavourites}
-        >
-          <AntDesign name="hearto" size={30} color={"white"} />
-        </TouchableOpacity>
-      )}
+      </View>
     </SafeAreaView>
   );
 };
