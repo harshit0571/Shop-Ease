@@ -1,4 +1,10 @@
-import { View, Text, ActivityIndicator, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import {
@@ -12,12 +18,16 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ProductCard from "@/components/common/ProductCard";
 import ProductCard2 from "@/components/common/ProductCard2";
+
+type SortDirection = "asc" | "desc";
 
 const SearchPage = () => {
   const { searchText } = useLocalSearchParams();
-  const [searchData, setSearchData] = useState<any>([]);
+  const [searchData, setSearchData] = useState<any[]>([]);
+  const [sortOption, setSortOption] = useState<SortDirection>("asc"); // Default sort option
+  const [showSortOptions, setShowSortOptions] = useState(false); // State for sorting options visibility
+
   useEffect(() => {
     const fetchSearches = async () => {
       try {
@@ -28,6 +38,7 @@ const SearchPage = () => {
           where("name", "<=", searchText?.toString() + "z"),
           limit(10)
         );
+
         const data = await getDocs(q);
         const array = data.docs.map((doc) => ({
           id: doc.id,
@@ -38,11 +49,7 @@ const SearchPage = () => {
 
         const tagRef = collection(db, "tags");
         const textarray = searchText?.toString().toLowerCase().split(" ");
-        const tagQuery = query(
-          tagRef,
-          where("name", "in", textarray),
-          limit(10)
-        );
+        const tagQuery = query(tagRef, where("name", "in", textarray));
 
         const tagData = await getDocs(tagQuery);
         const tags = tagData.docs.map((doc) => ({
@@ -57,12 +64,11 @@ const SearchPage = () => {
         }, {});
 
         const commonPids = Object.keys(pidCount).filter(
-          (pid) => pidCount[pid] == 1
+          (pid) => pidCount[pid] === 1
         );
 
         const commonProducts = [];
         for (const pid of commonPids) {
-          console.log(pid, "d");
           const productDoc = await getDoc(doc(db, "Products", pid));
           if (productDoc.exists()) {
             commonProducts.push({
@@ -73,6 +79,7 @@ const SearchPage = () => {
             });
           }
         }
+
         const uniqueProductIds = new Set();
 
         // Merge initial products and common products while ensuring uniqueness
@@ -87,21 +94,64 @@ const SearchPage = () => {
           }
         );
 
-        setSearchData(mergedProducts);
+        // Sort data based on sortOption
+        const sortedProducts = mergedProducts.sort((a, b) => {
+          if (sortOption === "asc") {
+            return a.price - b.price;
+          } else {
+            return b.price - a.price;
+          }
+        });
 
-        console.log(array, "done");
+        setSearchData(sortedProducts);
       } catch (error) {
         console.error("Error fetching products: ", error);
       }
     };
 
     fetchSearches();
-  }, []);
+  }, [sortOption]);
 
   return (
-    <View className="flex justify-center flex-col p-5 flex-1 w-full">
-      {!searchData ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+    <View className="flex-1 p-5">
+      <View className="mb-4">
+        <TouchableOpacity
+          className="  px-4 rounded"
+          onPress={() => setShowSortOptions(!showSortOptions)}
+        >
+          <Text className="text-black text-lg ">Sort By:</Text>
+        </TouchableOpacity>
+        {showSortOptions && (
+          <View className="mt-4">
+            <View className="flex-row ml-3">
+              <TouchableOpacity
+                className={`py-2 px-4 rounded mr-2 ${
+                  sortOption === "asc" ? "bg-red-500" : "bg-gray-400"
+                }`}
+                onPress={() => {
+                  setSortOption("asc");
+                  setShowSortOptions(false); // Hide options after selection
+                }}
+              >
+                <Text className="text-white text-sm">Price: Low to High</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className={`py-2 px-4 rounded ${
+                  sortOption === "desc" ? "bg-red-500" : "bg-gray-400 "
+                }`}
+                onPress={() => {
+                  setSortOption("desc");
+                  setShowSortOptions(false); // Hide options after selection
+                }}
+              >
+                <Text className="text-white text-sm">Price: High to Low</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+      {!searchData.length ? (
+        <ActivityIndicator size="large" color="red" />
       ) : (
         <FlatList
           data={searchData}

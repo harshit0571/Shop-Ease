@@ -11,7 +11,7 @@ const _layout = () => {
       />
       <Stack.Screen
         name="[orderId]/index"
-        options={{ header: () => <CommonHeader title="Your Orders" /> }}
+        options={{ header: () => <CommonHeader title="Order Details" /> }}
       />
     </Stack>
   );
