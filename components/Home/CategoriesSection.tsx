@@ -46,7 +46,7 @@ const CategoriesSection = () => {
     }
   }, [categories, activeTab]);
   return (
-    <View className=" w-[90%] m-auto my-5 px-2 rounded-lg flex-col">
+    <View className=" w-[90%] m-auto my-5 px-2 rounded-lg flex-col mb-12">
       <Text className="text-xl font-bold">Shop By Categories</Text>
       <CategoryToggle
         categories={categories}

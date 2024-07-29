@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, StatusBar } from "react-native";
 import React, { useEffect } from "react";
 import { Link } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -55,6 +55,7 @@ const main = () => {
   return (
     <SafeAreaView className="flex-1">
       <Header />
+      <StatusBar barStyle={"dark-content"} />
       <ScrollView>
         <Jumbotron
           imageUrl="https://thumbs.dreamstime.com/b/red-converse-shoes-hanging-red-wall-pair-red-converse-shoes-suspended-red-wall-ai-generated-306691318.jpg"
