@@ -1,10 +1,11 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import CategoryToggle from "./CategoryToggle";
 import { getCategories } from "@/context/CategoriesProvider";
 import { query, collection, where, limit, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import ProductCardContainer from "./ProductCardContainer";
+import { useRouter } from "expo-router";
 
 interface product {
   id: String;
@@ -47,6 +48,7 @@ const CategoriesSection = () => {
       }
     }
   }, [categories, activeTab]);
+  const router = useRouter();
   return (
     <View className=" w-[90%] m-auto my-5 px-2 rounded-lg flex-col mb-12">
       <Text className="text-xl font-bold">Shop By Categories</Text>
@@ -56,6 +58,14 @@ const CategoriesSection = () => {
         setActiveTab={setActiveTab}
       />
       {productList && <ProductCardContainer productList={productList} />}
+      <TouchableOpacity
+      className="mb-5 mt-2 w-full"
+        onPress={() =>
+          router.push("/(search)/" + activeTab + "/CategoryDisplay")
+        }
+      >
+        <Text className="text-xl text-center underline text-gray-400">View All Products</Text>
+      </TouchableOpacity>
     </View>
   );
 };

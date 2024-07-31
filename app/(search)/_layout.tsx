@@ -12,6 +12,10 @@ const _layout = () => {
         name="[searchText]/SearchPage"
         options={{ header: () => <CommonHeader title="search results" /> }}
       />
+      <Stack.Screen
+        name="[category]/CategoryDisplay"
+        options={{ header: () => <CommonHeader title="search results" /> }}
+      />
     </Stack>
   );
 };
