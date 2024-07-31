@@ -11,6 +11,7 @@ interface product {
   title: String;
   images: String[];
   price: Number;
+  listed: boolean;
 }
 
 const CategoriesSection = () => {
@@ -33,6 +34,7 @@ const CategoriesSection = () => {
       title: doc.data().name,
       images: doc.data().images,
       price: doc.data().price,
+      listed: doc.data().listed,
     }));
     setProductList(list);
   };

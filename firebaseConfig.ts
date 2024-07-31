@@ -4,14 +4,13 @@ import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAjYOyP2gH2Cen-NDq9JR4MpLfPaOofE_k",
-  authDomain: "shopease-6e338.firebaseapp.com",
-  projectId: "shopease-6e338",
-  storageBucket: "shopease-6e338.appspot.com",
-  messagingSenderId: "69148097591",
-  appId: "1:69148097591:web:9e7a7628c19548fdf993b2",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

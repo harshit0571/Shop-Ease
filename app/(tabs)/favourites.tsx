@@ -1,4 +1,10 @@
-import { View, Text, ActivityIndicator, FlatList, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  FlatList,
+  StatusBar,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomHeader from "@/components/Product/CustomHeader";
@@ -53,7 +59,7 @@ const Favourites = () => {
   }, [favourites]);
   return (
     <SafeAreaView className="flex flex-col p-5 flex-1 w-full">
-            <StatusBar barStyle={"dark-content"} />
+      <StatusBar barStyle={"dark-content"} />
 
       <Text className="text-3xl mb-10 text-center">My Favourites</Text>
       {!products ? (
@@ -62,15 +68,17 @@ const Favourites = () => {
         <FlatList
           data={products}
           numColumns={2}
-          renderItem={({ item }) => (
-            <ProductCard2
-              key={item.id}
-              title={item.name}
-              price={item.price}
-              images={item.images}
-              id={item.id}
-            />
-          )}
+          renderItem={({ item }) =>
+            (
+              <ProductCard2
+                key={item.id}
+                title={item.name}
+                price={item.price}
+                images={item.images}
+                id={item.id}
+              />
+            )
+          }
           keyExtractor={(item) => item.id}
         />
       )}

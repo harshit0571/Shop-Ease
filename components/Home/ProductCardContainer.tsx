@@ -10,21 +10,25 @@ interface productInterface {
   price: number;
   images: string[];
   id: any;
+  listed: boolean;
 }
 const ProductCardContainer = ({ productList }: propsInterface) => {
-  console.log(productList?.length);
+  console.log(productList);
   return (
     <View className="flex flex-row flex-wrap gap-3 mt-5">
       {productList?.length > 0 ? (
-        productList?.map((product: productInterface) => (
-          <ProductCard
-            key={product.id}
-            title={product.title}
-            price={product.price}
-            images={product.images}
-            id={product.id}
-          />
-        ))
+        productList?.map(
+          (product: productInterface) =>
+            product.listed && (
+              <ProductCard
+                key={product.id}
+                title={product.title}
+                price={product.price}
+                images={product.images}
+                id={product.id}
+              />
+            )
+        )
       ) : (
         <View className="flex justify-center items-center  w-full">
           <ActivityIndicator

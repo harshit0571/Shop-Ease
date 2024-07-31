@@ -24,7 +24,7 @@ type SortDirection = "asc" | "desc";
 
 const SearchPage = () => {
   const { searchText } = useLocalSearchParams();
-  const [searchData, setSearchData] = useState<any[]>([]);
+  const [searchData, setSearchData] = useState<any[] | null>(null);
   const [sortOption, setSortOption] = useState<SortDirection>("asc"); // Default sort option
   const [showSortOptions, setShowSortOptions] = useState(false); // State for sorting options visibility
 
@@ -45,6 +45,7 @@ const SearchPage = () => {
           name: doc.data().name,
           images: doc.data().images,
           price: doc.data().price,
+          listed: doc.data().listed,
         }));
 
         const tagRef = collection(db, "tags");
@@ -150,7 +151,7 @@ const SearchPage = () => {
           </View>
         )}
       </View>
-      {!searchData.length ? (
+      {!searchData ? (
         <ActivityIndicator size="large" color="red" />
       ) : (
         <FlatList
@@ -174,6 +175,12 @@ const SearchPage = () => {
           )}
           keyExtractor={(item) => item.id}
         />
+      )}
+
+      {searchData?.length === 0 && (
+        <View className="absolute top-40 text-center w-full">
+          <Text className="text-center text-2xl ">No results found</Text>
+        </View>
       )}
     </View>
   );
